@@ -24,7 +24,12 @@ class Category:
         return self.balance
 
     def transfer(self, amount, budget_category):
-        pass
+        if self.check_funds(amount):
+            self.withdraw(amount, "Transfer to" + budget_category.category)
+            budget_category.deposit(amount, "Transfer from" + self.category)
+            return True
+        else:
+            return False
 
     def check_funds(self, amount):
         if amount > self.get_balance():
