@@ -4,8 +4,18 @@ class Category:
         self.balance = 0
         self.ledger = []
 
+    def __transaction_formatter(self, transaction):
+        trimmed_description = transaction.get("description")[:23].ljust(23)
+        trimmed_amount = f"{transaction.get('amount'):.2f}"[:7].rjust(7)
+        return trimmed_description + trimmed_amount
+
     def __str__(self):
-        pass
+        output = ""
+        output += self.category.capitalize().center(30, "*") + "\n"
+        for transaction in self.ledger:
+            output += self.__transaction_formatter(transaction) + "\n"
+        output += "Total: " + str(self.get_balance())
+        return output
 
     def deposit(self, amount, description=""):
         self.ledger.append({"amount": amount, "description": description})
@@ -25,8 +35,8 @@ class Category:
 
     def transfer(self, amount, budget_category):
         if self.check_funds(amount):
-            self.withdraw(amount, "Transfer to" + budget_category.category)
-            budget_category.deposit(amount, "Transfer from" + self.category)
+            self.withdraw(amount, "Transfer to " + budget_category.category)
+            budget_category.deposit(amount, "Transfer from " + self.category)
             return True
         else:
             return False
