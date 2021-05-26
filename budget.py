@@ -1,3 +1,6 @@
+import itertools
+
+
 class Category:
     def __init__(self, category):
         self.category = category
@@ -52,6 +55,7 @@ class Category:
 
 def create_spend_chart(categories):
     width = 3 * len(categories) + 1
+    actual_categories = [category.category.capitalize() for category in categories]
     graph = "Percentage spent by category\n"
     total = sum([category.withdrawals for category in categories])
     percentages = [
@@ -62,7 +66,11 @@ def create_spend_chart(categories):
         graph += (str(i).rjust(3) + "| ").ljust(width)
         graph += "\n"
 
-    graph += "    ".ljust(width + 4, "-")
+    graph += "    ".ljust(width + 4, "-") + "\n"
+
+    for i in itertools.zip_longest(*actual_categories, fillvalue=" "):
+        if any(j != " " for j in i):
+            graph += " ".rjust(5) + "  ".join(i) + "\n"
 
     return graph
 
