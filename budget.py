@@ -59,12 +59,20 @@ def create_spend_chart(categories):
     graph = "Percentage spent by category\n"
     total = sum([category.withdrawals for category in categories])
     percentages = [
-        round(category.withdrawals / total * 10) * 10 for category in categories
+        int(category.withdrawals / total * 10) * 10 for category in categories
     ]
 
     for i in range(100, -1, -10):
-        graph += (str(i).rjust(3) + "| ").ljust(width)
-        graph += "\n"
+        row = str(i).rjust(3) + "| "
+
+        for percentage in percentages:
+            if i <= percentage:
+                row += "o  "
+            else:
+                row += "   "
+
+        row += "\n"
+        graph += row
 
     graph += "    ".ljust(width + 4, "-") + "\n"
 
@@ -72,7 +80,8 @@ def create_spend_chart(categories):
         if any(j != " " for j in i):
             graph += " ".rjust(5) + "  ".join(i) + "\n"
 
-    return graph
+    print(graph)
+    return graph[:-1]
 
 
 if __name__ == "__main__":
