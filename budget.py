@@ -78,9 +78,8 @@ def create_spend_chart(categories):
 
     for i in itertools.zip_longest(*category_names, fillvalue=" "):
         if any(j != " " for j in i):
-            graph += " ".rjust(5) + "  ".join(i) + "\n"
+            graph += " ".rjust(5) + "  ".join(i) + "  \n"
 
-    print(graph)
     return graph[:-1]
 
 
